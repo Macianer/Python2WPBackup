@@ -1,2 +1,2 @@
 # PythonWPBackup
-Backup script for Wordpress pages by using Python 3
+Backup script for Wordpress pages by using Python 2
