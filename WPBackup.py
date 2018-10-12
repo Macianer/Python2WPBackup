@@ -44,6 +44,7 @@ def parsing_wpconfig_content(wp_config_content):
     user = re.search(regex_db_user, wp_config_content).group(1)
     password = re.search(regex_db_pass, wp_config_content).group(1)
     host = re.search(regex_db_host, wp_config_content).group(1)
+
     return {u'database': databse,
             u'user': user,
             u'password': password,
@@ -88,7 +89,7 @@ def make_sqldump(db_details, backup_directory):
         DATABASE = db_details[u'database']
         DUMPNAME = os.path.normpath(os.path.join(
             backup_directory, db_details[u'database']+u'.sql'))
-        cmd = f"mysqldump -u {USER} -p{PASSWORD} -h {HOST} {DATABASE} > {DUMPNAME} 2> /dev/null"
+        cmd = ("mysqldump -u {0} -p{1} -h {2} {3} > {4} 2> /dev/null").format(User,PASSWORD,HOST,DATABASE,DUMPNAME)
         subprocess.call(cmd, None, timeout=None, shell=True)
         print u'Finished'
         return DUMPNAME
@@ -135,7 +136,7 @@ def main(argv):
         database_info = parsing_wpconfig(wp_dir)
         dump_location = make_sqldump(database_info, backup_directory)
         archive_path = make_archive(wp_dir, dump_location, backup_directory)
-        print f"Finished backup with {archive_path}"
+        print ("Finished backup with {0}").format(archive_path)
 
 
 if __name__ == u'__main__':

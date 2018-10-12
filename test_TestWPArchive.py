@@ -29,4 +29,5 @@ class TestWPConfigParsing(unittest.TestCase):
         backup_directory = os.path.join(path, BACKUP_TEST_DIRECTORY)
         test_file_path = os.path.join(path, FIXTURE_DIRECTORY + u'/dump.sql')
         wp_dir = os.path.join(path, FIXTURE_DIRECTORY + u'/wp_test')
-        self.assertIsNotNone(WPBackup.make_archive(wp_dir, test_file_path, backup_directory))
+        self.assertIsNotNone(WPBackup.make_archive(
+            wp_dir, test_file_path, backup_directory))
