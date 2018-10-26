@@ -107,14 +107,14 @@ def main(argv):
     wp_dir = ''
     backup_directory = ''
     try:
-        opts, _ = getopt.getopt(argv, 'w:b', ['wordpress_directory=', 'backup_directory='])
+        opts, _ = getopt.getopt(argv, 'hw:b', ['wordpress_directory=', 'backup_directory='])
     except getopt.GetoptError as err:
         print(str(err)) 
         usage()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('WPBackup.py -w <wordpress_directory> -b <backup_directory>')
+            print('WPBackup.py -wordpress_directory <wordpress_directory> --backup_directory <backup_directory>')
             usage()
             sys.exit()
         elif opt in ("-w", "--wordpress_directory"):
@@ -142,7 +142,7 @@ def main(argv):
 def usage():
     print("\n\nDescription:\n\nA script to backup wordpress website onto local folder.")
     print("This backup will include file and database information related to Wordpress folder.\n")
-    print('\nUSAGE: ./WPBackup.py -w <wordpress_directory> -b <backup_directory>')
+    print('\nUSAGE: ./WPBackup.py -wordpress_directory <wordpress_directory> -backup_directory <backup_directory>')
 
 if __name__ == '__main__':
     main(sys.argv[1:])
