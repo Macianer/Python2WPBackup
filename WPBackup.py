@@ -107,22 +107,27 @@ def main(argv):
     wp_dir = ''
     backup_directory = ''
     try:
-        opts, args = getopt.getopt(argv, "hi:o:", ["ifile=", "ofile="])
-    except getopt.GetoptError:
-        print('WPBackup.py -wp <wordpress_directory> -b <backup_directory>')
+        opts, _ = getopt.getopt(argv, 'w:b', ['wordpress_directory=', 'backup_directory='])
+    except getopt.GetoptError as err:
+        print(str(err)) 
+        usage()
         sys.exit(2)
     for opt, arg in opts:
         if opt == '-h':
-            print('WPBackup.py -wp <wordpress_directory> -b <backup_directory>')
+            print('WPBackup.py -w <wordpress_directory> -b <backup_directory>')
+            usage()
             sys.exit()
-        elif opt in ("-wp", "--wordpress_directory"):
+        elif opt in ("-w", "--wordpress_directory"):
             wp_dir = arg
         elif opt in ("-b", "--backup_directory"):
             backup_directory = arg
-    if len(wp_dir) < 1 and len(backup_directory) < 1:
-        print("\n\nDescription:\n\nA script to backup wordpress website onto local folder.")
-        print("This backup will include file and database information related to Wordpress folder.\n")
-        print('\nUSAGE: ./WPBackup.py -wp <wordpress_directory> -b <backup_directory>')
+    if len(wp_dir) < 1:
+        print("wordpress directory is missing")
+        usage()
+        sys.exit()
+    if len(backup_directory) < 1:
+        print("backup directory is missing")
+        usage()
         sys.exit()
 
     if os.path.exists(wp_dir):
@@ -134,6 +139,10 @@ def main(argv):
         archive_path = make_archive(wp_dir, dump_location, backup_directory)
         print(f"Finished backup with {archive_path}")
 
+def usage():
+    print("\n\nDescription:\n\nA script to backup wordpress website onto local folder.")
+    print("This backup will include file and database information related to Wordpress folder.\n")
+    print('\nUSAGE: ./WPBackup.py -w <wordpress_directory> -b <backup_directory>')
 
 if __name__ == '__main__':
     main(sys.argv[1:])
