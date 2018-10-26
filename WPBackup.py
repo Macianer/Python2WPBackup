@@ -85,7 +85,7 @@ def make_sqldump(db_details, backup_directory):
             backup_directory, db_details['database']+'.sql'))
         cmd = f"mysqldump -u {USER} -p{PASSWORD} -h {HOST} {DATABASE} > {DUMPNAME} 2> /dev/null"
         subprocess.call(cmd, None, timeout=None, shell=True)
-        print('Finished')
+        print('Finished SQL dumping')
         return DUMPNAME
     except subprocess.TimeoutExpired:
         print('Error: MysqlDump failed with timeout.')
