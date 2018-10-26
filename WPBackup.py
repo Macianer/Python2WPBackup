@@ -111,22 +111,27 @@ def main(argv):
     wp_dir = u''
     backup_directory = u''
     try:
-        opts, args = getopt.getopt(argv, u"hi:o:", [u"ifile=", u"ofile="])
-    except getopt.GetoptError:
-        print u'WPBackup.py -wp <wordpress_directory> -b <backup_directory>'
+        opts, _ = getopt.getopt(argv, 'w:b', ['wordpress_directory=', 'backup_directory='])
+    except getopt.GetoptError as err:
+        print(str(err)) 
+        usage()
         sys.exit(2)
     for opt, arg in opts:
-        if opt == u'-h':
-            print u'WPBackup.py -wp <wordpress_directory> -b <backup_directory>'
+        if opt == '-h':
+            print('WPBackup.py -w <wordpress_directory> -b <backup_directory>')
+            usage()
             sys.exit()
-        elif opt in (u"-wp", u"--wordpress_directory"):
+        elif opt in ("-w", "--wordpress_directory"):
             wp_dir = arg
         elif opt in (u"-b", u"--backup_directory"):
             backup_directory = arg
-    if len(wp_dir) < 1 and len(backup_directory) < 1:
-        print u"\n\nDescription:\n\nA script to backup wordpress website onto local folder."
-        print u"This backup will include file and database information related to Wordpress folder.\n"
-        print u'\nUSAGE: ./WPBackup.py -wp <wordpress_directory> -b <backup_directory>'
+    if len(wp_dir) < 1:
+        print("wordpress directory is missing")
+        usage()
+        sys.exit()
+    if len(backup_directory) < 1:
+        print("backup directory is missing")
+        usage()
         sys.exit()
 
     if os.path.exists(wp_dir):
@@ -138,6 +143,10 @@ def main(argv):
         archive_path = make_archive(wp_dir, dump_location, backup_directory)
         print ("Finished backup with {0}").format(archive_path)
 
+def usage():
+    print("\n\nDescription:\n\nA script to backup wordpress website onto local folder.")
+    print("This backup will include file and database information related to Wordpress folder.\n")
+    print('\nUSAGE: ./WPBackup.py -w <wordpress_directory> -b <backup_directory>')
 
 if __name__ == u'__main__':
     main(sys.argv[1:])
