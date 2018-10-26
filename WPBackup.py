@@ -49,8 +49,6 @@ def parsing_wpconfig_content(wp_config_content):
 
 
 def make_archive(wordpress_path, dumpfile_path, backup_directory):
-    if not wordpress_path or not dumpfile_path or not backup_directory:
-        return None
     try:
         time_tag = datetime.datetime.now().strftime('%Y-%m-%d-%H-%M-%S')
         dir_name = os.path.basename(wordpress_path.rstrip('/'))
