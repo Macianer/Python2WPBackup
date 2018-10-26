@@ -91,9 +91,6 @@ def make_sqldump(db_details, backup_directory):
         subprocess.call(cmd, None, timeout=None, shell=True)
         print u'Finished SQL dumping'
         return DUMPNAME
-    except subprocess.TimeoutExpired:
-        print u'Error: MysqlDump failed with timeout.'
-        sys.exit(1)
 
     except:
         print u'Error: Unknown error while dumping mysql.'
