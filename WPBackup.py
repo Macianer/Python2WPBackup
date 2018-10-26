@@ -53,8 +53,6 @@ def parsing_wpconfig_content(wp_config_content):
 
 
 def make_archive(wordpress_path, dumpfile_path, backup_directory):
-    if not wordpress_path or not dumpfile_path or not backup_directory:
-        return None
     try:
         time_tag = datetime.datetime.now().strftime(u'%Y-%m-%d-%H-%M-%S')
         dir_name = os.path.basename(wordpress_path.rstrip(u'/'))
@@ -91,7 +89,7 @@ def make_sqldump(db_details, backup_directory):
             backup_directory, db_details[u'database']+u'.sql'))
         cmd = ("mysqldump -u {0} -p{1} -h {2} {3} > {4} 2> /dev/null").format(User,PASSWORD,HOST,DATABASE,DUMPNAME)
         subprocess.call(cmd, None, timeout=None, shell=True)
-        print u'Finished'
+        print u'Finished SQL dumping'
         return DUMPNAME
     except subprocess.TimeoutExpired:
         print u'Error: MysqlDump failed with timeout.'
@@ -117,16 +115,13 @@ def main(argv):
         usage()
         sys.exit(2)
     for opt, arg in opts:
-        print arg
         if opt == u'-h':
-            print u'WPBackup.py -w <wordpress_directory> -b <backup_directory>'
+            print u'WPBackup.py -wordpress_directory <wordpress_directory> --backup_directory <backup_directory>'
             usage()
             sys.exit()
         elif opt in (u"-w", u"--wordpress_directory"):
-            print "found wp"
             wp_dir = arg
         elif opt in (u"-b", u"--backup_directory"):
-            print "found b" + arg
             backup_directory = arg
     if len(wp_dir) < 1:
         print u"wordpress directory is missing"
@@ -147,7 +142,7 @@ def main(argv):
 def usage():
     print u"\n\nDescription:\n\nA script to backup wordpress website onto local folder."
     print u"This backup will include file and database information related to Wordpress folder.\n"
-    print u'\nUSAGE: ./WPBackup.py -w <wordpress_directory> -b <backup_directory>'
+    print u'\nUSAGE: ./WPBackup.py -wordpress_directory <wordpress_directory> -backup_directory <backup_directory>'
 
 if __name__ == u'__main__':
     main(sys.argv[1:])
